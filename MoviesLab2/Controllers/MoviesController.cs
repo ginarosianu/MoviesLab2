@@ -8,7 +8,9 @@ using MoviesLab2.Models;
 
 namespace MoviesLab2.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
+
     [ApiController]
     public class MoviesController : ControllerBase
     {
@@ -45,7 +47,9 @@ namespace MoviesLab2.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(long id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies
+                                             .Include(m => m.Comments)
+                                             .FirstOrDefaultAsync (m => m.Id == id);
 
             if (movie == null)
             {

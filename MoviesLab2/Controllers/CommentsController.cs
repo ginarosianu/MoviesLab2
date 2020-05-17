@@ -22,7 +22,7 @@ namespace MoviesLab2.Controllers
 
         // GET: api/Comments
         [HttpGet]
-        /* public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+       /*  public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
         {
             var comments = await _context.Comments
                                     .Include(c => c.MovieId)
@@ -39,15 +39,11 @@ namespace MoviesLab2.Controllers
             return Ok(comments);
         }
 
-
-            */
-
-
-
-
+        */
+         
         // GET: api/Comments
         [HttpGet]
-       public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+      public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
         {
             return await _context.Comments.ToListAsync();
         }

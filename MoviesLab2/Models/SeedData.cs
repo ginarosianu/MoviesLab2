@@ -46,10 +46,12 @@ namespace MoviesLab2.Models
                         Rating = 1,
                         Watched = false
                     }
-
-                ); ;
+                             
+                    ); 
                 context.SaveChanges();
             }
+
+                    
         }
     }
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesLab2.Models;
 
 namespace MoviesLab2.Migrations
 {
     [DbContext(typeof(MoviesDbContext))]
-    partial class MovieDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200517062210_AddCommentsToMovies")]
+    partial class AddCommentsToMovies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +31,10 @@ namespace MoviesLab2.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Important")
+                    b.Property<bool>("Content")
                         .HasColumnType("bit");
 
-                    b.Property<long>("MovieId")
+                    b.Property<long?>("MovieId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -86,11 +85,9 @@ namespace MoviesLab2.Migrations
 
             modelBuilder.Entity("MoviesLab2.Models.Comment", b =>
                 {
-                    b.HasOne("MoviesLab2.Models.Movie", null)
+                    b.HasOne("MoviesLab2.Models.Movie", "Movie")
                         .WithMany("Comments")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MovieId");
                 });
 #pragma warning restore 612, 618
         }

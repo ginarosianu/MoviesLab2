@@ -9,6 +9,7 @@ using MoviesLab2.Models;
 
 namespace MoviesLab2.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase
@@ -20,27 +21,11 @@ namespace MoviesLab2.Controllers
             _context = context;
         }
 
-        // GET: api/Comments
-        [HttpGet]
-       /*  public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
-        {
-            var comments = await _context.Comments
-                                    .Include(c => c.MovieId)
-                                    .Select(c => new
-                                    {
-                                        c.Id,
-                                        c.Author,
-                                        c.Content,
-                                        c.Important,
-                                        MovieId = c.MovieId
-                                    })
-                                    .ToListAsync();
+        /// <summary>
+        /// Gets a list of all comments;
+        /// </summary>
+        /// <returns>A list of Comment objects</returns>
 
-            return Ok(comments);
-        }
-
-        */
-         
         // GET: api/Comments
         [HttpGet]
       public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
@@ -48,6 +33,17 @@ namespace MoviesLab2.Controllers
             return await _context.Comments.ToListAsync();
         }
 
+
+
+        /// <summary>
+        /// Gets a specific comment.
+        /// </summary>
+        /// <param name="id">The id of the comment you want to return.</param>
+        /// <returns>The comment with the id you gave.</returns>
+        ///<response code= "201">Returns specific comment</response>
+        ///<response code="404">Not found, if the param id does not exist.</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         // GET: api/Comments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Comment>> GetComment(long id)
@@ -61,6 +57,13 @@ namespace MoviesLab2.Controllers
 
             return comment;
         }
+
+        /// <summary>
+        /// Updates a comment.
+        /// </summary>
+        /// <param name="id">Edit the id of the comment you want to update </param>
+        /// <param name="comment">Enter the new name of the comment</param>
+        /// <returns>The updated comment.</returns>
 
         // PUT: api/Comments/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -94,6 +97,26 @@ namespace MoviesLab2.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Creats a Comment object
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     {
+        ///         "author": "First author",
+        ///         "content": "something",
+        ///         "important": true,
+        ///         "movieId": 1
+        ///      } 
+        /// </remarks>
+        /// <returns> A newly created comment</returns>
+        /// <response code="201">Returns the newly created comment.</response>
+        /// <response code = "400">If comments's maximum length is greater than 20. or
+        ///                        If author minimum length is lower than 2. </response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
         // POST: api/Comments
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -106,6 +129,15 @@ namespace MoviesLab2.Controllers
             return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
         }
 
+
+        /// <summary>
+        /// Delets a specific Comment object
+        /// </summary>
+        /// <param name="id">The id of comment you want to delete</param>
+        ///<response code ="200">The comment was succesfully deleted.</response>
+        ///<response code = "400">The comment was not succesfully deleted.</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Comment>> DeleteComment(long id)
